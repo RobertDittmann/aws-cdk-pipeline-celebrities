@@ -21,20 +21,25 @@ export class RebuildPipeline extends Construct {
         super(app, id);
 
         const rebuildPipelineProject = new RebuildPipelineProject(this, 'RebuildPipelineProject', {
-            role: props.role
+            role: props.role,
+            branchName: `${props.branchName}`,
+            repo: `${props.repo}`,
+            repoOwner: `${props.repoOwner}`,
+            repoSecretName: `${props.repoSecretName}`,
+            envName: `${props.envName}`
         });
 
         this.action = new codepipeline_actions.CodeBuildAction({
             actionName: 'Pipeline_UPDATE',
             project: rebuildPipelineProject.project,
             input: props.source,
-            environmentVariables: {
-                ENV_NAME: {value: props.envName},
-                BRANCH_NAME: {value: props.branchName},
-                REPO: {value: props.repo},
-                REPO_OWNER: {value: props.repoOwner},
-                REPO_SECRET_NAME: {value: props.repoSecretName},
-            } // to always rebuilt for the same environment !!
+            // environmentVariables: {
+            //     ENV_NAME: {value: props.envName},
+            //     BRANCH_NAME: {value: props.branchName},
+            //     REPO: {value: props.repo},
+            //     REPO_OWNER: {value: props.repoOwner},
+            //     REPO_SECRET_NAME: {value: props.repoSecretName},
+            // } // to always rebuilt for the same environment !!
         })
     }
 }
