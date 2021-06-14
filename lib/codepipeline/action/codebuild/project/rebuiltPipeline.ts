@@ -43,6 +43,7 @@ export class RebuildPipelineProject extends Construct {
                 REPO: {value: props.repo},
                 REPO_OWNER: {value: props.repoOwner},
                 REPO_SECRET_NAME: {value: props.repoSecretName},
+                TEST_PLACE: {value: 'PROJECT'},
             } // to always rebuilt for the same environment !!
         });
     }
