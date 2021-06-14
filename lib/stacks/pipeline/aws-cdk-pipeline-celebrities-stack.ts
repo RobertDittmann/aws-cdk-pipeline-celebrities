@@ -1,5 +1,9 @@
 import * as cdk from '@aws-cdk/core';
 import {StackProps} from "@aws-cdk/core";
+import {PipelineRoles} from "../../roles/pipelineRoles";
+import {PipelineS3Bucket} from "../../s3/pipelineS3Bucket";
+
+
 
 export interface AwsCdkPipelineCelebritiesStackProps extends StackProps {
   readonly envName: string;
@@ -14,7 +18,10 @@ export class AwsCdkPipelineCelebritiesStack extends cdk.Stack {
       ...props
     });
 
-
+    const pipelineRoles = new PipelineRoles(this, 'PipelineRoles');
+    const pipelineArtifactsBucket = new PipelineS3Bucket(this,  'PipelineArtifactsBucket', {
+      envName: `${props?.envName}` // only props?envName will not work cause thinks undefined
+    });
 
   }
 }
