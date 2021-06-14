@@ -8,12 +8,12 @@ export interface PipelineS3BucketProps {
 }
 
 export class PipelineS3Bucket extends Construct {
-    public readonly pipelineArtifactsBucket: s3.Bucket;
+    public readonly bucket: s3.Bucket;
 
     constructor(scope: Construct, id: string, props?: PipelineS3BucketProps) {
         super(scope, id);
 
-        this.pipelineArtifactsBucket = new s3.Bucket(this, id, { // use same id as construct
+        this.bucket = new s3.Bucket(this, id, { // use same id as construct
             encryption: BucketEncryption.S3_MANAGED,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             bucketName: `${props?.envName}-pipeline-artifacts`, // only small letters

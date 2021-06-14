@@ -5,16 +5,23 @@ import {AwsCdkPipelineCelebritiesStack} from '../lib/stacks/pipeline/aws-cdk-pip
 
 const ENV_NAME = process.env.ENV_NAME ? process.env.ENV_NAME.toLowerCase() : '';
 const BRANCH_NAME = process.env.BRANCH_NAME ? process.env.BRANCH_NAME : '';
+const REPO = process.env.REPO ? process.env.REPO : '';
+const REPO_OWNER = process.env.REPO_OWNER ? process.env.REPO_OWNER : '';
+const REPO_SECRET_NAME = process.env.REPO_SECRET_NAME ? process.env.REPO_SECRET_NAME : '';
 
 
 const app = new cdk.App();
 
 if (!ENV_NAME) {
-    console.error("No ENV_NAME present");
     throw new Error("No ENV_NAME present");
 } else if (!BRANCH_NAME) {
-    console.error("No BRANCH_NAME present");
     throw new Error("No BRANCH_NAME present");
+} else if (!REPO) {
+    throw new Error("No REPO present");
+} else if (!REPO_OWNER) {
+    throw new Error("No REPO_OWNER present");
+} else if (!REPO_SECRET_NAME) {
+    throw new Error("No REPO_SECRET_NAME present");
 }
 
 new AwsCdkPipelineCelebritiesStack(app, 'AwsCdkPipelineCelebritiesStack', {
@@ -33,5 +40,8 @@ new AwsCdkPipelineCelebritiesStack(app, 'AwsCdkPipelineCelebritiesStack', {
     /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 
     envName: ENV_NAME,
-    branchName: BRANCH_NAME
+    branchName: BRANCH_NAME,
+    repo: REPO,
+    repoOwner: REPO_OWNER,
+    repoSecretName: REPO_SECRET_NAME
 });

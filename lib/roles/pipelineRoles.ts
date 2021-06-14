@@ -9,15 +9,15 @@ export class PipelineRoles extends Construct {
         super(scope, id);
 
         // for now it can be too much
-        const adminRoleForCodeBuild = new iam.Role(this, `AdminCodeBuildRole`, {
+        this.adminRoleForCodeBuild = new iam.Role(this, `AdminCodeBuildRole`, {
             assumedBy: new iam.ServicePrincipal('codebuild.amazonaws.com')
         })
-        adminRoleForCodeBuild.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+        this.adminRoleForCodeBuild.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
 
         // for now it can be too much
-        const adminRoleForCodePipeline = new iam.Role(this, `AdminCodePipelineRole`, {
+        this.adminRoleForCodePipeline = new iam.Role(this, `AdminCodePipelineRole`, {
             assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com')
         })
-        adminRoleForCodePipeline.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+        this.adminRoleForCodePipeline.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
     }
 }
