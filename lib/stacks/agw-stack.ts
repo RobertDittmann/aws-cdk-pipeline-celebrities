@@ -29,15 +29,16 @@ export class AgwStack extends cdk.Stack {
 
         const httpApi = new HttpApi(this, `${props.envName}-agw2`);
 
+        const endpointLambda = lambda.Function.fromFunctionArn(this, 'AgwEndpointLambda', lambdaArn);
+
         httpApi.addRoutes({
             path: `/${props.envName}-metadata-api/{id}`,
             methods: [HttpMethod.GET],
             integration: new integration.LambdaProxyIntegration({
-                handler: lambda.Function.fromFunctionArn(this, 'AgwEndpointLambda', lambdaArn)
+                handler: endpointLambda
             })
         });
 
-        lambda.Function.fromFunctionArn(this, 'AgwEndpointLambda', lambdaArn).addEventSource(HttpApi);
 
         httpApi.addStage(`${props.envName}-stage`, {
             stageName: `${props.envName}-metadata-api`,
