@@ -28,7 +28,7 @@ export class RebuildPipelineProject extends Construct {
                         commands: [
                             'npm run build',
                             `npm run cdk synth AwsCdkPipelineCelebritiesStack`, // given ID of pipeline project
-                            `npm run cdk-no-approval AwsCdkPipelineCelebritiesStack`, // --require-approval never (to not confirm cause missing console)
+                            `npm run cdk deploy -- --require-approval never AwsCdkPipelineCelebritiesStack`, // --require-approval never (to not confirm cause missing console)
                         ],
                     },
                 }
