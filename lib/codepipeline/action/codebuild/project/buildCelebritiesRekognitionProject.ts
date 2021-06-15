@@ -24,7 +24,7 @@ export class BuildCelebritiesRekognitionProject extends Construct {
                         commands: [
                             'npm run build',
                             `npm run cdk synth CelebritiesRekognitionStack`,
-                            `npm run cdk cdk-no-approval CelebritiesRekognitionStack`,
+                            `npm run cdk-no-approval CelebritiesRekognitionStack`,
                         ],
                     },
                 },
