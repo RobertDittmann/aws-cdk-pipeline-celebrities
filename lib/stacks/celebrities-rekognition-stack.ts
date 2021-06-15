@@ -50,17 +50,17 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: props.stackName + '-generator'
+            functionName: `${props.stackName}` + '-generator'
         });
 
         const endpointFunction = new lambda.Function(this, 'LambdaEndpoint', {
             runtime: lambda.Runtime.NODEJS_14_X,
             handler: 'endpoint.handler',
-            code: lambda.Code.fromAsset('./functions/endpoint/src/zipped'),
+            code: lambda.Code.fromAsset('./functions/endpoint/src'),
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: props.stackName + '-endpoint'
+            functionName: `${props.stackName}` + '-endpoint'
         });
 
         bucket.grantRead(generatorFunction);
