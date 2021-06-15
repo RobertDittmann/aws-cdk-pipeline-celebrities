@@ -29,6 +29,7 @@ export class BuildCelebritiesRekognitionStack extends Construct {
             actionName: 'Deploy_Celebrities_Stack',
             project: buildCelebritiesRekognitionProject.project,
             input: props.source,
+            runOrder: 1, // should be 1ST action
             environmentVariables: {
                 ENV_NAME: {value: props.envName},
                 BRANCH_NAME: {value: props.branchName},
