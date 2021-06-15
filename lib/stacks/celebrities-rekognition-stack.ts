@@ -30,7 +30,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             encryption: BucketEncryption.S3_MANAGED,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             autoDeleteObjects: true,
-            bucketName: props.envName + '-images', // it is string so ok
+            bucketName: props.envName + '-celebrities-rekognition-images', // it is string so ok
             accessControl: BucketAccessControl.PUBLIC_READ
         });
 
