@@ -57,7 +57,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
         const endpointFunction = new lambda.Function(this, 'LambdaEndpoint', {
             runtime: lambda.Runtime.NODEJS_14_X,
             handler: 'endpoint.handler',
-            code: lambda.Code.fromAsset('./functions/endpoint/src/zipped'),
+            code: lambda.Code.fromAsset('./functions/endpoint/src/endpoint.zip'),
             environment: {
                 'TABLE_NAME': table.tableName
             },
