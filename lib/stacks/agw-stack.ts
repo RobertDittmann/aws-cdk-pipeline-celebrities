@@ -4,6 +4,8 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import {HttpApi, HttpMethod} from '@aws-cdk/aws-apigatewayv2';
 import * as integration from "@aws-cdk/aws-apigatewayv2-integrations";
 import * as ssm from '@aws-cdk/aws-ssm';
+import {ApiEventSource} from "@aws-cdk/aws-lambda-event-sources";
+import * as agw from '@aws-cdk/aws-apigateway';
 
 export interface AgwStackProps extends StackProps {
     readonly envName: string;
@@ -34,6 +36,8 @@ export class AgwStack extends cdk.Stack {
                 handler: lambda.Function.fromFunctionArn(this, 'AgwEndpointLambda', lambdaArn)
             })
         });
+
+        lambda.Function.fromFunctionArn(this, 'AgwEndpointLambda', lambdaArn).addEventSource(HttpApi);
 
         httpApi.addStage(`${props.envName}-stage`, {
             stageName: `${props.envName}-metadata-api`,
