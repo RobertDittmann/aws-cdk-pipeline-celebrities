@@ -6,6 +6,7 @@ import {RebuildPipeline} from "../../codepipeline/action/codebuild/rebuildPipeli
 import * as codepipeline from "@aws-cdk/aws-codepipeline";
 import {BuildCelebritiesRekognitionStack} from "../../codepipeline/action/codebuild/buildCelebritiesRekognitionStack";
 import {EndpointLambda} from "../../codepipeline/action/codebuild/endpointLambda";
+import {BuildAgwStack} from "../../codepipeline/action/codebuild/buildAgwStack";
 
 
 export interface AwsCdkPipelineCelebritiesStackProps extends StackProps {
@@ -67,6 +68,16 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
             envName: `${props.envName}`
         });
 
+        const buildAgwStack = new BuildAgwStack(this, 'DeployAgw', {
+            source: githubAction.source,
+            role: pipelineRoles.adminRoleForCodeBuild,
+            branchName: `${props.branchName}`,
+            repo: `${props.repo}`,
+            repoOwner: `${props.repoOwner}`,
+            repoSecretName: `${props.repoSecretName}`,
+            envName: `${props.envName}`
+        });
+
         new codepipeline.Pipeline(this, `Pipeline`, {
             pipelineName: `${props.envName}-Pipeline`,
             artifactBucket: pipelineArtifactsBucket.bucket,
@@ -93,7 +104,8 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
                 {
                     stageName: 'Deploy',
                     actions: [
-                        deployCelebritiesRekognitionStack.action
+                        deployCelebritiesRekognitionStack.action,
+                        buildAgwStack.action
                     ],
                 }
             ],

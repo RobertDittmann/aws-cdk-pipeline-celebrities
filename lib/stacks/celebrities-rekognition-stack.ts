@@ -8,6 +8,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as IAM from '@aws-cdk/aws-iam';
 import {Effect} from '@aws-cdk/aws-iam';
 import {S3EventSource} from '@aws-cdk/aws-lambda-event-sources';
+import * as ssm from '@aws-cdk/aws-ssm';
 
 export interface CelebritiesRekognitionStackProps extends StackProps {
     readonly envName: string;
@@ -50,7 +51,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: stackName + '-generator'
+            functionName: props.envName + '-generator'
         });
 
         const endpointFunction = new lambda.Function(this, 'LambdaEndpoint', {
@@ -60,7 +61,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: stackName + '-endpoint'
+            functionName: props.envName + '-endpoint'
         });
 
         bucket.grantRead(generatorFunction);
@@ -78,5 +79,13 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
         generatorFunction.addEventSource(new S3EventSource(bucket, {
             events: [S3.EventType.OBJECT_CREATED_PUT]
         }));
+
+        new ssm.StringParameter(this, 'ParameterLambdaEndpoint', {
+            allowedPattern: '.*',
+            description: 'ARN of lambda endpoint',
+            parameterName: props.envName + '-endpoint-lambda',
+            stringValue: endpointFunction.functionArn,
+            tier: ssm.ParameterTier.ADVANCED,
+        });
     }
 }
