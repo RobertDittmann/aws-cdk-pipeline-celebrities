@@ -6,6 +6,7 @@ import * as integration from "@aws-cdk/aws-apigatewayv2-integrations";
 import * as ssm from '@aws-cdk/aws-ssm';
 import {ApiEventSource} from "@aws-cdk/aws-lambda-event-sources";
 import * as agw from '@aws-cdk/aws-apigateway';
+import {LambdaIntegration} from "@aws-cdk/aws-apigateway";
 
 export interface AgwStackProps extends StackProps {
     readonly envName: string;
@@ -27,22 +28,30 @@ export class AgwStack extends cdk.Stack {
             parameterName: props.envName + '-endpoint-lambda', // will take latest
         }).stringValue;
 
-        const httpApi = new HttpApi(this, `${props.envName}-agw2`);
-
         const endpointLambda = lambda.Function.fromFunctionArn(this, 'AgwEndpointLambda', lambdaArn);
 
-        httpApi.addRoutes({
-            path: `/${props.envName}-metadata-api/{id}`,
-            methods: [HttpMethod.GET],
-            integration: new integration.LambdaProxyIntegration({
-                handler: endpointLambda
-            })
-        });
+        // const httpApi = new HttpApi(this, `${props.envName}-agw2`);
+        //
+
+        //
+        // httpApi.addRoutes({
+        //     path: `/${props.envName}-metadata-api/{id}`,
+        //     methods: [HttpMethod.GET],
+        //     integration: new integration.LambdaProxyIntegration({
+        //         handler: endpointLambda
+        //     })
+        // });
+        //
+        // httpApi.addStage(`${props.envName}-stage`, {
+        //     stageName: `${props.envName}-metadata-api`,
+        //     autoDeploy: true
+        // });
 
 
-        httpApi.addStage(`${props.envName}-stage`, {
-            stageName: `${props.envName}-metadata-api`,
-            autoDeploy: true
-        });
+        const api = new agw.RestApi(this, `${props.envName}-api`);
+
+        const metadata = api.root.addResource('metadata');
+        const metadataItem = metadata.addResource('{id}');
+        metadataItem.addMethod('GET', new LambdaIntegration(endpointLambda));
     }
 }
