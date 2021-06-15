@@ -2,6 +2,7 @@
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import {AwsCdkPipelineCelebritiesStack} from '../lib/stacks/pipeline/aws-cdk-pipeline-celebrities-stack';
+import {CelebritiesRekognitionStack} from "../lib/stacks/celebrities-rekognition-stack";
 
 const ENV_NAME = process.env.ENV_NAME ? process.env.ENV_NAME.toLowerCase() : '';
 const BRANCH_NAME = process.env.BRANCH_NAME ? process.env.BRANCH_NAME : '';
@@ -44,4 +45,8 @@ new AwsCdkPipelineCelebritiesStack(app, 'AwsCdkPipelineCelebritiesStack', {
     repo: REPO,
     repoOwner: REPO_OWNER,
     repoSecretName: REPO_SECRET_NAME
+});
+
+new CelebritiesRekognitionStack(app, 'CelebritiesRekognitionStack', {
+    envName: ENV_NAME
 });

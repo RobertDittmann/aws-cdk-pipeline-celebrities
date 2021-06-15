@@ -4,6 +4,8 @@ import {PipelineS3Bucket} from "../../s3/pipelineS3Bucket";
 import {GithubAction} from "../../codepipeline/action/source/githubAction";
 import {RebuildPipeline} from "../../codepipeline/action/codebuild/rebuildPipeline";
 import * as codepipeline from "@aws-cdk/aws-codepipeline";
+import {BuildCelebritiesRekognitionStack} from "../../codepipeline/action/codebuild/buildCelebritiesRekognitionStack";
+import {EndpointLambda} from "../../codepipeline/action/codebuild/endpointLambda";
 
 
 export interface AwsCdkPipelineCelebritiesStackProps extends StackProps {
@@ -49,6 +51,18 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
             envName: `${props.envName}`
         });
 
+        const endpointLambdaBuild = new EndpointLambda(this, 'EndpointLambdaBuild', {
+            source: githubAction.source,
+            envName: `${props.envName}`
+        })
+
+        // STACKS
+        const deployCelebritiesRekognitionStack = new BuildCelebritiesRekognitionStack(this, 'DeployCelebritiesRekognition', {
+            source: githubAction.source,
+            role: pipelineRoles.adminRoleForCodeBuild,
+            envName: `${props.envName}`
+        });
+
         new codepipeline.Pipeline(this, `Pipeline`, {
             pipelineName: `${props.envName}-Pipeline`,
             artifactBucket: pipelineArtifactsBucket.bucket,
@@ -64,6 +78,18 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
                     stageName: 'Pipeline_Update',
                     actions: [
                         updatePipeline.action
+                    ],
+                },
+                {
+                    stageName: 'Build',
+                    actions: [
+                        endpointLambdaBuild.action
+                    ],
+                },
+                {
+                    stageName: 'Deploy',
+                    actions: [
+                        deployCelebritiesRekognitionStack.action
                     ],
                 }
             ],
