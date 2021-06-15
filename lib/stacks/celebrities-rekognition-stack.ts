@@ -38,7 +38,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
         const table = new dynamodb.Table(this, 'RekognitionTable', {
             partitionKey: {name: 'id', type: dynamodb.AttributeType.STRING},
             billingMode: BillingMode.PAY_PER_REQUEST,
-            tableName: `${props.stackName}`, // not string so need to point it that this is string
+            tableName: stackName,
             removalPolicy: RemovalPolicy.DESTROY
         });
 
@@ -50,7 +50,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: `${props.stackName}` + '-generator'
+            functionName: stackName + '-generator'
         });
 
         const endpointFunction = new lambda.Function(this, 'LambdaEndpoint', {
@@ -60,7 +60,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: `${props.stackName}` + '-endpoint'
+            functionName: stackName + '-endpoint'
         });
 
         bucket.grantRead(generatorFunction);
