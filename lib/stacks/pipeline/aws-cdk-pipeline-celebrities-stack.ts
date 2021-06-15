@@ -60,6 +60,10 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
         const deployCelebritiesRekognitionStack = new BuildCelebritiesRekognitionStack(this, 'DeployCelebritiesRekognition', {
             source: githubAction.source,
             role: pipelineRoles.adminRoleForCodeBuild,
+            branchName: `${props.branchName}`,
+            repo: `${props.repo}`,
+            repoOwner: `${props.repoOwner}`,
+            repoSecretName: `${props.repoSecretName}`,
             envName: `${props.envName}`
         });
 

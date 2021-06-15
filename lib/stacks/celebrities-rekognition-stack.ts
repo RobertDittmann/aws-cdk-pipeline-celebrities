@@ -11,6 +11,10 @@ import {S3EventSource} from '@aws-cdk/aws-lambda-event-sources';
 
 export interface CelebritiesRekognitionStackProps extends StackProps {
     readonly envName: string;
+    readonly branchName: string;
+    readonly repo: string;
+    readonly repoOwner: string;
+    readonly repoSecretName: string;
 }
 
 export class CelebritiesRekognitionStack extends cdk.Stack {

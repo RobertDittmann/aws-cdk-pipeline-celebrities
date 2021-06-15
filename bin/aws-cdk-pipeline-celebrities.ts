@@ -15,13 +15,7 @@ const app = new cdk.App();
 
 if (!ENV_NAME) {
     throw new Error("No ENV_NAME present");
-}
-
-new CelebritiesRekognitionStack(app, 'CelebritiesRekognitionStack', {
-    envName: ENV_NAME
-});
-
-if (!BRANCH_NAME) {
+} else if (!BRANCH_NAME) {
     throw new Error("No BRANCH_NAME present");
 } else if (!REPO) {
     throw new Error("No REPO present");
@@ -53,6 +47,12 @@ new AwsCdkPipelineCelebritiesStack(app, 'AwsCdkPipelineCelebritiesStack', {
     repoSecretName: REPO_SECRET_NAME
 });
 
-
+new CelebritiesRekognitionStack(app, 'CelebritiesRekognitionStack', {
+    envName: ENV_NAME,
+    branchName: BRANCH_NAME,
+    repo: REPO,
+    repoOwner: REPO_OWNER,
+    repoSecretName: REPO_SECRET_NAME
+});
 
 app.synth();
