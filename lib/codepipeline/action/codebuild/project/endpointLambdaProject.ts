@@ -13,11 +13,8 @@ export class EndpointLambdaProject extends Construct {
                 phases: {
                     install: {
                         commands: [
-                            'ls',
                             'cd functions/endpoint/src',
-                            'ls',
                             'npm install',
-                            'ls',
                         ],
                     },
                     build: {
