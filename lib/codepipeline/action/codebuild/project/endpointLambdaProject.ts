@@ -25,10 +25,10 @@ export class EndpointLambdaProject extends Construct {
                     },
                     post_build: {
                         commands: [
-                            'zip -- -r zipped/endpoint.zip endpoint.js node_modules',
+                            'zip -r zipped/endpoint.zip endpoint.js node_modules',
                             'ls',
                             'cd zipped',
-                            'rm -- -rf *.txt',
+                            'rm -rf *.txt',
                             'ls'
                         ]
                     }
