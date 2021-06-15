@@ -32,6 +32,14 @@ export class AgwStack extends cdk.Stack {
         const metadataItem = metadata.addResource('{id}');
         metadataItem.addMethod('GET', new LambdaIntegration(endpointLambda));
 
+        new ssm.StringParameter(this, 'ParameterLambdaEndpoint', {
+            allowedPattern: '.*',
+            description: 'ARN of api GW',
+            parameterName: props.envName + '-agw',
+            stringValue: api.arnForExecuteApi(),
+            tier: ssm.ParameterTier.ADVANCED,
+        });
+
         endpointLambda.addPermission('AgwPermissionForEndpointLambda',{
             action: "lambda:InvokeFunction",
             sourceArn: api.arnForExecuteApi(),
