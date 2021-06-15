@@ -4,6 +4,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as agw from '@aws-cdk/aws-apigateway';
 import {LambdaIntegration} from '@aws-cdk/aws-apigateway';
+import * as iam from '@aws-cdk/aws-iam';
 
 export interface AgwStackProps extends StackProps {
     readonly envName: string;
@@ -30,5 +31,11 @@ export class AgwStack extends cdk.Stack {
         const metadata = api.root.addResource('metadata');
         const metadataItem = metadata.addResource('{id}');
         metadataItem.addMethod('GET', new LambdaIntegration(endpointLambda));
+
+        endpointLambda.addPermission('AgwPermissionForEndpointLambda',{
+            action: "lambda:InvokeFunction",
+            sourceArn: api.arnForExecuteApi.toString(),
+            principal: new iam.ServicePrincipal('apigateway.amazonaws.com')
+        });
     }
 }
