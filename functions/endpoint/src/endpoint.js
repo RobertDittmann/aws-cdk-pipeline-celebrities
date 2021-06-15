@@ -1,5 +1,5 @@
 const DynamodbClient = require('aws-sdk/clients/dynamodb');
-const random = require('random');
+// const random = require('random');
 const dynamodb = new DynamodbClient.DocumentClient();
 
 const TABLE_NAME = process.env.TABLE_NAME;
@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     }).promise();
 
     console.log(`Received item: ${JSON.stringify(results.Item)}`);
-    console.log(`Random boolean ${random.boolean()}`); // not important
+    // console.log(`Random boolean ${random.boolean()}`); // not important
 
     return {
         statusCode: 200,
