@@ -61,7 +61,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             environment: {
                 'TABLE_NAME': table.tableName
             },
-            functionName: props.envName + '-endpoint'
+            functionName: props.envName + '-endpoint',
         });
 
         bucket.grantRead(generatorFunction);

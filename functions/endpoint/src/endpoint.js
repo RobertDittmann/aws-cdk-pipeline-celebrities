@@ -5,7 +5,7 @@ const dynamodb = new DynamodbClient.DocumentClient();
 const TABLE_NAME = process.env.TABLE_NAME;
 
 exports.handler = async (event) => {
-    console.log(`Trying to process the event: ${JSON.stringify(event)}`);
+    console.log(`Trying to process the event: ${JSON.stringify(event)}`)
 
     const results = await dynamodb.get({
         TableName: TABLE_NAME,
@@ -21,8 +21,8 @@ exports.handler = async (event) => {
         statusCode: 200,
         headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify(results.Item),
+        body: JSON.stringify(results.Item)
     };
 };

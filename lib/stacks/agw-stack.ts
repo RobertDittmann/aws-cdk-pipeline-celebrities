@@ -34,7 +34,7 @@ export class AgwStack extends cdk.Stack {
 
         endpointLambda.addPermission('AgwPermissionForEndpointLambda',{
             action: "lambda:InvokeFunction",
-            sourceArn: api.arnForExecuteApi.toString(),
+            sourceArn: api.arnForExecuteApi(),
             principal: new iam.ServicePrincipal('apigateway.amazonaws.com')
         });
     }
