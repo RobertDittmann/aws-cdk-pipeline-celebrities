@@ -56,7 +56,11 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
         const updatePipeline = new RebuildPipeline(this, 'RebuildPipeline', {
             source: githubAction.source,
             role: pipelineRoles.adminRoleForCodeBuild,
-            envName: `${props.envName}`
+            envName: `${props.envName}`,
+            branchName: `${props.branchName}`,
+            repo: `${props.repo}`,
+            repoOwner: `${props.repoOwner}`,
+            repoSecretName: `${props.repoSecretName}`
         });
 
         const endpointLambdaBuild = new EndpointLambda(this, 'EndpointLambdaBuild', {

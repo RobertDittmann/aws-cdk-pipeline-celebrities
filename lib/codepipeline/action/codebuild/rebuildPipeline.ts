@@ -8,6 +8,10 @@ export interface RebuildPipelineProps {
     readonly source: codepipeline.Artifact;
     readonly envName: string;
     readonly role: iam.Role;
+    readonly branchName: string;
+    readonly repo: string;
+    readonly repoOwner: string;
+    readonly repoSecretName: string;
 }
 
 export class RebuildPipeline extends Construct {
@@ -18,7 +22,11 @@ export class RebuildPipeline extends Construct {
 
         const rebuildPipelineProject = new RebuildPipelineProject(this, 'RebuildPipelineProject', {
             role: props.role,
-            envName: `${props.envName}`
+            envName: `${props.envName}`,
+            branchName: `${props.branchName}`,
+            repo: `${props.repo}`,
+            repoOwner: `${props.repoOwner}`,
+            repoSecretName: `${props.repoSecretName}`
         });
 
         this.action = new codepipeline_actions.CodeBuildAction({

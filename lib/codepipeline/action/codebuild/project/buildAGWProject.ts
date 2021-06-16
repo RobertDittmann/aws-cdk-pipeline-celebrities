@@ -23,7 +23,7 @@ export class BuildAgwProject extends Construct {
                     build: {
                         commands: [
                             'npm run build',
-                            `npm run cdk synth AgwStack`,
+                            `npm run cdk synth AgwStack --parameters envName=${props.envName}`,
                             `npm run cdk-no-approval AgwStack --parameters envName=${props.envName}`,
                         ],
                     },

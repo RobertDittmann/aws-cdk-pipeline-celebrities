@@ -5,6 +5,10 @@ import * as codebuild from "@aws-cdk/aws-codebuild";
 export interface RebuildPipelineProjectProps {
     readonly envName: string;
     readonly role: iam.Role;
+    readonly branchName: string;
+    readonly repo: string;
+    readonly repoOwner: string;
+    readonly repoSecretName: string;
 }
 
 export class RebuildPipelineProject extends Construct {
@@ -23,8 +27,8 @@ export class RebuildPipelineProject extends Construct {
                     build: {
                         commands: [
                             'npm run build',
-                            `npm run cdk synth AwsCdkPipelineCelebritiesStack`, // given ID of pipeline project
-                            `npm run cdk deploy -- --require-approval never AwsCdkPipelineCelebritiesStack --parameters envName=${props.envName}`,
+                            `npm run cdk synth AwsCdkPipelineCelebritiesStack -- --parameters envName=${props.envName} --parameters branchName=${props.branchName} --parameters repo=${props.repo} --parameters repoOwner=${props.repoOwner} --parameters repoSecretName=${props.repoSecretName}`,
+                            `npm run cdk deploy -- --require-approval never AwsCdkPipelineCelebritiesStack --parameters envName=${props.envName} --parameters branchName=${props.branchName} --parameters repo=${props.repo} --parameters repoOwner=${props.repoOwner} --parameters repoSecretName=${props.repoSecretName}`,
                         ],
                     },
                 }
