@@ -20,7 +20,7 @@ export interface AwsCdkPipelineCelebritiesStackProps extends StackProps {
 export class AwsCdkPipelineCelebritiesStack extends Stack {
     constructor(app: Construct, id: string, props: AwsCdkPipelineCelebritiesStackProps) {
         if (!props.envName) {
-            throw new Error("No envName present");
+            throw new Error(`No envName present: ${props.envName}`);
         } else if (!props.branchName) {
             throw new Error("No branchName present");
         } else if (!props.repo) {
