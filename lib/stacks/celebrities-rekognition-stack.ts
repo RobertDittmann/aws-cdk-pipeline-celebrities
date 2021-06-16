@@ -17,9 +17,6 @@ export interface CelebritiesRekognitionStackProps extends StackProps {
 
 export class CelebritiesRekognitionStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: CelebritiesRekognitionStackProps) {
-        if (!props.envName) {
-            throw new Error("No envName present");
-        }
         const stackName = props.envName + '-celebrities-rekognition';
         super(scope, id, {
             stackName: stackName,
@@ -57,7 +54,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
         const endpointFunction = new lambda.Function(this, 'LambdaEndpoint', {
             runtime: lambda.Runtime.NODEJS_14_X,
             handler: 'endpoint.handler',
-            code: lambda.Code.fromAsset('./functions/endpoint/src/endpoint.zip'),
+            code: lambda.Code.fromAsset('./functions/endpoint/src'),
             environment: {
                 'TABLE_NAME': table.tableName
             },
