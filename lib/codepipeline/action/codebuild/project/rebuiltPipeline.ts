@@ -27,11 +27,11 @@ export class RebuildPipelineProject extends Construct {
                     build: {
                         commands: [
                             'npm run build',
-                            `export envName=${props.envName}`,
-                            `export branchName=${props.branchName}`,
-                            `export repo=${props.repo}`,
-                            `export repoOwner=${props.repoOwner}`,
-                            `export repoSecretName=${props.repoSecretName}`,
+                            // `export envName=${props.envName}`,
+                            // `export branchName=${props.branchName}`,
+                            // `export repo=${props.repo}`,
+                            // `export repoOwner=${props.repoOwner}`,
+                            // `export repoSecretName=${props.repoSecretName}`,
                             `npm run cdk synth AwsCdkPipelineCelebritiesStack`,
                             `npm run cdk deploy -- --require-approval never AwsCdkPipelineCelebritiesStack`,
                         ],
@@ -41,7 +41,15 @@ export class RebuildPipelineProject extends Construct {
             role: props.role,
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
-            }
+            },
+            environmentVariables: {
+                ENV_NAME: {value: props.envName},
+                BRANCH_NAME: {value: props.branchName},
+                REPO: {value: props.repo},
+                REPO_OWNER: {value: props.repoOwner},
+                REPO_SECRET_NAME: {value: props.repoSecretName},
+                TEST_PLACE: {value: 'PROJECT'},
+            } // to always rebuilt for the same environment !!
         });
     }
 }
