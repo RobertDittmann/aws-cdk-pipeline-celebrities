@@ -1,5 +1,5 @@
 export ENV_NAME=test
-export BRANCH_NAME=add_lambdas_and_stack_with_infrastructure
+export BRANCH_NAME=master
 export REPO=aws-cdk-pipeline-celebrities
 export REPO_OWNER=RobertDittmann
 export REPO_SECRET_NAME=RobertDittmannGithubToken
