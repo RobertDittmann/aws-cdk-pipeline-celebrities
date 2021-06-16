@@ -1,5 +1,5 @@
 import * as cdk from '@aws-cdk/core';
-import {RemovalPolicy, StackProps} from '@aws-cdk/core';
+import {CfnParameter, RemovalPolicy, StackProps} from '@aws-cdk/core';
 import * as S3 from '@aws-cdk/aws-s3';
 import {BucketAccessControl, BucketEncryption} from '@aws-cdk/aws-s3';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';

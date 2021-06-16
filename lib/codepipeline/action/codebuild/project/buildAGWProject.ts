@@ -32,7 +32,10 @@ export class BuildAgwProject extends Construct {
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
             },
-            role: props.role
+            role: props.role,
+            environmentVariables: {
+                ENV_NAME: {value: props.envName}
+            } // to always rebuilt for the same environment !!
         });
     }
 }
