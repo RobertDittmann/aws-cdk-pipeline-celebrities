@@ -19,17 +19,6 @@ export interface AwsCdkPipelineCelebritiesStackProps extends StackProps {
 
 export class AwsCdkPipelineCelebritiesStack extends Stack {
     constructor(app: Construct, id: string, props: AwsCdkPipelineCelebritiesStackProps) {
-        if (!props.envName) {
-            throw new Error(`No envName present: ${props.envName}`);
-        } else if (!props.branchName) {
-            throw new Error("No branchName present");
-        } else if (!props.repo) {
-            throw new Error("No repo present");
-        } else if (!props.repoOwner) {
-            throw new Error("No repoOwner present");
-        } else if (!props.repoSecretName) {
-            throw new Error("No repoSecretName present");
-        }
         const stackName = props.envName + '-pipeline'; // to generate all stack names using ENV_NAME
         super(app, id, {
             stackName: stackName, // set STACK NAME for stack

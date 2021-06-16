@@ -11,9 +11,6 @@ export interface AgwStackProps extends StackProps {
 
 export class AgwStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: AgwStackProps) {
-        if (!props.envName) {
-            throw new Error("No envName present");
-        }
         const stackName = props.envName + '-agw-celebrities-rekognition';
         super(scope, id, {
             stackName: stackName,
