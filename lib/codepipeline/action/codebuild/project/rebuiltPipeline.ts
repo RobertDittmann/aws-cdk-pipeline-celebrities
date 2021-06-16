@@ -27,7 +27,7 @@ export class RebuildPipelineProject extends Construct {
                     build: {
                         commands: [
                             'npm run build',
-                            `npm run cdk synth AwsCdkPipelineCelebritiesStack -- -c envName=${props.envName} branchName=${props.branchName} repo=${props.repo} repoOwner=${props.repoOwner} repoSecretName=${props.repoSecretName}`,
+                            `npm run cdk synth AwsCdkPipelineCelebritiesStack -- --parameters envName=${props.envName} --parameters branchName=${props.branchName} --parameters repo=${props.repo} --parameters repoOwner=${props.repoOwner} --parameters repoSecretName=${props.repoSecretName}`,
                             `npm run cdk deploy -- --require-approval never AwsCdkPipelineCelebritiesStack --parameters envName=${props.envName} --parameters branchName=${props.branchName} --parameters repo=${props.repo} --parameters repoOwner=${props.repoOwner} --parameters repoSecretName=${props.repoSecretName}`,
                         ],
                     },
