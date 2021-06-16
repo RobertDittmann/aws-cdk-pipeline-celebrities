@@ -9,10 +9,6 @@ export interface BuildAgwStackProps {
     readonly source: codepipeline.Artifact;
     readonly envName: string;
     readonly role: iam.Role;
-    readonly branchName: string;
-    readonly repo: string;
-    readonly repoOwner: string;
-    readonly repoSecretName: string;
 }
 
 export class BuildAgwStack extends Construct {
@@ -31,13 +27,6 @@ export class BuildAgwStack extends Construct {
             project: buildAgwProject.project,
             input: props.source,
             runOrder: 2, // should be 2nd action
-            environmentVariables: {
-                ENV_NAME: {value: props.envName},
-                BRANCH_NAME: {value: props.branchName},
-                REPO: {value: props.repo},
-                REPO_OWNER: {value: props.repoOwner},
-                REPO_SECRET_NAME: {value: props.repoSecretName},
-            } // to always rebuilt for the same environment !!
         });
     }
 }

@@ -14,18 +14,6 @@ const REPO_SECRET_NAME = process.env.REPO_SECRET_NAME ? process.env.REPO_SECRET_
 
 const app = new cdk.App();
 
-if (!ENV_NAME) {
-    throw new Error("No ENV_NAME present");
-} else if (!BRANCH_NAME) {
-    throw new Error("No BRANCH_NAME present");
-} else if (!REPO) {
-    throw new Error("No REPO present");
-} else if (!REPO_OWNER) {
-    throw new Error("No REPO_OWNER present");
-} else if (!REPO_SECRET_NAME) {
-    throw new Error("No REPO_SECRET_NAME present");
-}
-
 new AwsCdkPipelineCelebritiesStack(app, 'AwsCdkPipelineCelebritiesStack', {
     /* If you don't specify 'env', this stack will be environment-agnostic.
      * Account/Region-dependent features and context lookups will not work,
@@ -49,19 +37,11 @@ new AwsCdkPipelineCelebritiesStack(app, 'AwsCdkPipelineCelebritiesStack', {
 });
 
 new CelebritiesRekognitionStack(app, 'CelebritiesRekognitionStack', {
-    envName: ENV_NAME,
-    branchName: BRANCH_NAME,
-    repo: REPO,
-    repoOwner: REPO_OWNER,
-    repoSecretName: REPO_SECRET_NAME
+    envName: ENV_NAME
 });
 
 new AgwStack(app, 'AgwStack', {
-    envName: ENV_NAME,
-    branchName: BRANCH_NAME,
-    repo: REPO,
-    repoOwner: REPO_OWNER,
-    repoSecretName: REPO_SECRET_NAME
+    envName: ENV_NAME
 });
 
 app.synth();

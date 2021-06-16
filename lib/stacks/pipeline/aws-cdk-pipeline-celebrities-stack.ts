@@ -19,6 +19,17 @@ export interface AwsCdkPipelineCelebritiesStackProps extends StackProps {
 
 export class AwsCdkPipelineCelebritiesStack extends Stack {
     constructor(app: Construct, id: string, props: AwsCdkPipelineCelebritiesStackProps) {
+        if (!props.envName) {
+            throw new Error("No envName present");
+        } else if (!props.branchName) {
+            throw new Error("No branchName present");
+        } else if (!props.repo) {
+            throw new Error("No repo present");
+        } else if (!props.repoOwner) {
+            throw new Error("No repoOwner present");
+        } else if (!props.repoSecretName) {
+            throw new Error("No repoSecretName present");
+        }
         const stackName = props.envName + '-pipeline'; // to generate all stack names using ENV_NAME
         super(app, id, {
             stackName: stackName, // set STACK NAME for stack
@@ -45,10 +56,6 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
         const updatePipeline = new RebuildPipeline(this, 'RebuildPipeline', {
             source: githubAction.source,
             role: pipelineRoles.adminRoleForCodeBuild,
-            branchName: `${props.branchName}`,
-            repo: `${props.repo}`,
-            repoOwner: `${props.repoOwner}`,
-            repoSecretName: `${props.repoSecretName}`,
             envName: `${props.envName}`
         });
 
@@ -59,22 +66,14 @@ export class AwsCdkPipelineCelebritiesStack extends Stack {
 
         // STACKS
         const deployCelebritiesRekognitionStack = new BuildCelebritiesRekognitionStack(this, 'DeployCelebritiesRekognition', {
-            source: githubAction.source,
             role: pipelineRoles.adminRoleForCodeBuild,
-            branchName: `${props.branchName}`,
-            repo: `${props.repo}`,
-            repoOwner: `${props.repoOwner}`,
-            repoSecretName: `${props.repoSecretName}`,
-            envName: `${props.envName}`
+            envName: `${props.envName}`,
+            source: githubAction.source,
         });
 
         const buildAgwStack = new BuildAgwStack(this, 'DeployAgw', {
             source: githubAction.source,
             role: pipelineRoles.adminRoleForCodeBuild,
-            branchName: `${props.branchName}`,
-            repo: `${props.repo}`,
-            repoOwner: `${props.repoOwner}`,
-            repoSecretName: `${props.repoSecretName}`,
             envName: `${props.envName}`
         });
 

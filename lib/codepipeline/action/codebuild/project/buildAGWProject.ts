@@ -24,7 +24,7 @@ export class BuildAgwProject extends Construct {
                         commands: [
                             'npm run build',
                             `npm run cdk synth AgwStack`,
-                            `npm run cdk-no-approval AgwStack`,
+                            `npm run cdk-no-approval AgwStack --parameters envName=${props.envName}`,
                         ],
                     },
                 },
@@ -32,10 +32,7 @@ export class BuildAgwProject extends Construct {
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
             },
-            role: props.role,
-            environmentVariables: {
-                ENV_NAME: {value: props.envName},
-            } // to always rebuilt for the same environment !!
+            role: props.role
         });
     }
 }

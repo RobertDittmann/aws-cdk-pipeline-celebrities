@@ -8,10 +8,6 @@ export interface BuildCelebritiesRecognitionStackProps {
     readonly source: codepipeline.Artifact;
     readonly envName: string;
     readonly role: iam.Role;
-    readonly branchName: string;
-    readonly repo: string;
-    readonly repoOwner: string;
-    readonly repoSecretName: string;
 }
 
 export class BuildCelebritiesRekognitionStack extends Construct {
@@ -30,13 +26,6 @@ export class BuildCelebritiesRekognitionStack extends Construct {
             project: buildCelebritiesRekognitionProject.project,
             input: props.source,
             runOrder: 1, // should be 1ST action
-            environmentVariables: {
-                ENV_NAME: {value: props.envName},
-                BRANCH_NAME: {value: props.branchName},
-                REPO: {value: props.repo},
-                REPO_OWNER: {value: props.repoOwner},
-                REPO_SECRET_NAME: {value: props.repoSecretName},
-            } // to always rebuilt for the same environment !!
         });
     }
 }

@@ -6,20 +6,20 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import {BillingMode} from '@aws-cdk/aws-dynamodb';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as IAM from '@aws-cdk/aws-iam';
+import * as iam from '@aws-cdk/aws-iam';
 import {Effect} from '@aws-cdk/aws-iam';
 import {S3EventSource} from '@aws-cdk/aws-lambda-event-sources';
 import * as ssm from '@aws-cdk/aws-ssm';
 
 export interface CelebritiesRekognitionStackProps extends StackProps {
     readonly envName: string;
-    readonly branchName: string;
-    readonly repo: string;
-    readonly repoOwner: string;
-    readonly repoSecretName: string;
 }
 
 export class CelebritiesRekognitionStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: CelebritiesRekognitionStackProps) {
+        if (!props.envName) {
+            throw new Error("No envName present");
+        }
         const stackName = props.envName + '-celebrities-rekognition';
         super(scope, id, {
             stackName: stackName,
@@ -87,5 +87,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
             stringValue: endpointFunction.functionArn,
             tier: ssm.ParameterTier.ADVANCED,
         });
+
+        endpointFunction.grantInvoke(new iam.ServicePrincipal('apigateway.amazonaws.com')); // NOT the best cause gives permissions for each API GW endpoint
     }
 }
