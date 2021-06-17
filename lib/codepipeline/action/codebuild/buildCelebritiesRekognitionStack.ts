@@ -26,6 +26,9 @@ export class BuildCelebritiesRekognitionStack extends Construct {
             project: buildCelebritiesRekognitionProject.project,
             input: props.source,
             runOrder: 1, // should be 1ST action
+            environmentVariables: {
+                ENV_NAME: {value: props.envName},
+            }
         });
     }
 }
