@@ -2,7 +2,7 @@ import {Construct, SecretValue} from '@aws-cdk/core';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from "@aws-cdk/aws-codepipeline-actions";
 import {GitHubTrigger} from "@aws-cdk/aws-codepipeline-actions";
-import * as secrets from '@aws-cdk/aws-secretsmanager';
+import * as ssm from "@aws-cdk/aws-ssm";
 
 export interface GithubActionProps {
     readonly branchName: string;
@@ -20,8 +20,9 @@ export class GithubAction extends Construct {
 
         this.source = new codepipeline.Artifact(`Source`);
 
-        const token = secrets.Secret.fromSecretNameV2(this, `ImportedSecret`, `${props.repoSecretName}`)
-            .secretValue.toString();
+        const token = ssm.StringParameter.fromStringParameterAttributes(this, 'ImportedGithubToken', {
+            parameterName: `${props.repoSecretName}`, // will take latest
+        }).stringValue;
 
         this.action = new codepipeline_actions.GitHubSourceAction({
             owner: `${props.repoOwner}`,
