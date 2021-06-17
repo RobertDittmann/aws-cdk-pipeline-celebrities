@@ -23,6 +23,7 @@ export class BuildCelebritiesRekognitionProject extends Construct {
                     build: {
                         commands: [
                             'npm run build',
+                            'echo $ENV_NAME',
                             `npm run cdk synth CelebritiesRekognitionStack`,
                             `npm run cdk-no-approval CelebritiesRekognitionStack`, // without parameters cause taken from environment
                         ],
