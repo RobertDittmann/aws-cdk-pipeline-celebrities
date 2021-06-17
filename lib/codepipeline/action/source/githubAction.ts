@@ -21,7 +21,7 @@ export class GithubAction extends Construct {
         this.source = new codepipeline.Artifact(`Source`);
 
         const token = ssm.StringParameter.fromStringParameterAttributes(this, 'ImportedGithubToken', {
-            parameterName: `${props.repoSecretName}`, // will take latest
+            parameterName: `${props.repoSecretName}` ? `${props.repoSecretName}` : 'RobertDittmannGithubToken', // will take latest
         }).stringValue;
 
         this.action = new codepipeline_actions.GitHubSourceAction({
