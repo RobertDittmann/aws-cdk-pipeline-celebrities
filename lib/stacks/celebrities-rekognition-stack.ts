@@ -80,7 +80,7 @@ export class CelebritiesRekognitionStack extends cdk.Stack {
         new ssm.StringParameter(this, 'ParameterLambdaEndpoint', {
             allowedPattern: '.*',
             description: 'ARN of lambda endpoint',
-            parameterName: props.envName + '-endpoint-lambda',
+            parameterName: `${props.envName}-endpoint-lambda`,
             stringValue: endpointFunction.functionArn,
             tier: ssm.ParameterTier.ADVANCED,
         });
